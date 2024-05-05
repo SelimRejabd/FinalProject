@@ -73,6 +73,12 @@ contract CashLess {
             amount: _amount,
             timestamp: block.timestamp
         }));
+        transactionHistory[users[_to].walletAddress].push(Transaction({
+            from: _from,
+            to: _to,
+            amount: _amount,
+            timestamp: block.timestamp
+        }));
     }
     function getTransactionHistory() public view returns (Transaction[] memory) {
         return transactionHistory[msg.sender];
