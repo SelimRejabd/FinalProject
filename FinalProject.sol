@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
-contract CashLess {
+contract FinalProject {
 
     address  authority;
     string authorityMobile;
@@ -30,7 +30,14 @@ contract CashLess {
     mapping  (address => Mobile) userMobile;
     mapping (address => Transaction[]) transactionHistory;
 
-    constructor (string memory _name, string memory _mobile, string memory _password) {
+    constructor () {
+        // these are constructor parameters
+        // To solve the error of deployment, values are directly assigned.
+        // After deployment, Authority can change.
+        string memory _name = "ru";
+        string memory _mobile = "01521234916";
+        string memory _password = "@ru";
+
         authority = msg.sender;
         authorityMobile = _mobile;
         createAccount(_name, _mobile, _password);
@@ -55,6 +62,7 @@ contract CashLess {
 
     function updateInfo (string memory _name, string memory _mobile,  string memory _password) public {
         require(users[_mobile].created == true,"You have n't any account. Please register.");
+        require(users[_mobile].walletAddress == msg.sender, "You have no permission to update info.");
         users[_mobile] = Person({
             name: _name,
             mobile : _mobile,
@@ -70,7 +78,7 @@ contract CashLess {
     }
 
     
-    function addMoney (uint _amount) public {
+    function addMoneyToAuthority (uint _amount) public {
         require(msg.sender == authority, "You cannot add tokens to authority account");
         users[authorityMobile].balance += _amount;
         addToTransactionHistory(authorityMobile, authorityMobile, _amount);
@@ -100,7 +108,7 @@ contract CashLess {
         return transactionHistory[msg.sender];
     }
 
-    function setBalance (string memory _mobile, uint _amount) public {
+    function setBalanceToUser (string memory _mobile, uint _amount) public {
         require(msg.sender==authority, "Only Authority can give tokens");
         require(users[authorityMobile].balance >= _amount, "You don't have sufficient balance. Pelease add tokens.");
         require(users[_mobile].created == true, "Account not created yet.");
