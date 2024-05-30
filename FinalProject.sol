@@ -31,16 +31,26 @@ contract FinalProject {
     mapping (address => Transaction[]) transactionHistory;
 
     constructor () {
-        // these are constructor parameters
-        // To solve the error of deployment, values are directly assigned.
-        // After deployment, Authority can change.
+
         string memory _name = "ru";
         string memory _mobile = "01521234916";
         string memory _password = "@ru";
 
         authority = msg.sender;
         authorityMobile = _mobile;
-        createAccount(_name, _mobile, _password);
+
+        users[_mobile] = Person({
+            name: _name,
+            mobile : _mobile,
+            password: _password,
+            balance: users[_mobile].balance,
+            walletAddress: msg.sender,
+            created : true
+        });
+
+        userMobile[msg.sender] = Mobile({
+            mobile: _mobile
+        });
     }
 
     function createAccount (string memory _name, string memory _mobile,  string memory _password) public {
