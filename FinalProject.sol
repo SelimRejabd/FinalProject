@@ -17,6 +17,7 @@ contract FinalProject {
 
     struct Mobile{
         string mobile;
+        bool isCreated;
     }
 
     struct Transaction {
@@ -49,13 +50,14 @@ contract FinalProject {
         });
 
         userMobile[msg.sender] = Mobile({
-            mobile: _mobile
+            mobile: _mobile,
+            isCreated: true
         });
     }
 
     function createAccount (string memory _name, string memory _mobile,  string memory _password) public {
-
-        require(users[_mobile].created == false,"You already have an account.");
+        require(users[_mobile].created == false,"You already have an account. Try with different phone number");
+        require(userMobile[msg.sender].isCreated == false, "You already have an account. Try with different address");
         users[_mobile] = Person({
             name: _name,
             mobile : _mobile,
@@ -66,7 +68,8 @@ contract FinalProject {
         });
 
         userMobile[msg.sender] = Mobile({
-            mobile: _mobile
+            mobile: _mobile,
+            isCreated: true
         });
     }
 
@@ -83,7 +86,8 @@ contract FinalProject {
         });
 
         userMobile[msg.sender] = Mobile({
-            mobile: _mobile
+            mobile: _mobile,
+            isCreated: true
         });
     }
 
@@ -161,8 +165,8 @@ contract FinalProject {
         );
     }
 
-    function loginCheck (string memory _password) external view returns (string memory) {
-    string memory _mobile = userMobile[msg.sender].mobile;
+    function loginCheck (string memory _mobile, string memory _password) external view returns (string memory) {
+    // string memory _mobile = userMobile[msg.sender].mobile;
     string memory _authorityMobile = authorityMobile;
 
     if (keccak256(bytes(_mobile)) == keccak256(bytes(_authorityMobile))) {
