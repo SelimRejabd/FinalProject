@@ -44,7 +44,7 @@ contract FinalProject {
             name: _name,
             mobile : _mobile,
             password: _password,
-            balance: users[_mobile].balance,
+            balance: 0,
             walletAddress: msg.sender,
             created : true
         });
@@ -62,7 +62,7 @@ contract FinalProject {
             name: _name,
             mobile : _mobile,
             password: _password,
-            balance: users[_mobile].balance,
+            balance: 0,
             walletAddress: msg.sender,
             created : true
         });
