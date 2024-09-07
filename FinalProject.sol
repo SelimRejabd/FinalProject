@@ -166,7 +166,7 @@ contract FinalProject {
     }
 
     function loginCheck (string memory _mobile, string memory _password) external view returns (string memory) {
-    // string memory _mobile = userMobile[msg.sender].mobile;
+    string memory _userMobile = userMobile[msg.sender].mobile;
     string memory _authorityMobile = authorityMobile;
 
     if (keccak256(bytes(_mobile)) == keccak256(bytes(_authorityMobile))) {
@@ -175,13 +175,15 @@ contract FinalProject {
         } else {
             return "notUser";
         }
-    } else {
+    } else if(keccak256(bytes(_mobile)) == keccak256(bytes(_userMobile))) {
         if (keccak256(bytes(users[_mobile].password)) == keccak256(bytes(_password))) {
             return "user";
         } else {
             return "notUser";
         }
+        
     }
+    else return "notUser";
 }
 
 }
